@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Agendar consulta — {{ hospital_name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1>Agendar consulta</h1>
+    <form method="get" class="card stack" id="select-form">
+      <h3>1. Escolha especialidade, médico e data</h3>
+      <label>Especialidade
+        <select name="specialty_id" data-autosubmit>
+          <option value="">Selecione…</option>
+          {% for s in specialties %}<option value="{{ s.id }}" {{ 'selected' if s.id == spec_id }}>{{ s.name }}</option>{% endfor %}
+        </select></label>
+      <label>Médico
+        <select name="doctor_id" data-autosubmit>
+          <option value="">Selecione…</option>
+          {% for d in doctors %}<option value="{{ d.id }}" {{ 'selected' if doctor and d.id == doctor.id }}>{{ d.name }}</option>{% endfor %}
+        </select></label>
+      <label>Data
+        <input type="date" name="date" min="{{ today }}" value="{{ date_str }}" data-autosubmit></label>
+      <button class="btn btn-outline" type="submit">Ver horários</button>
+    </form>
+
+    {% if doctor and day %}
+    <form method="post" class="card stack" style="margin-top:1.25rem">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="doctor_id" value="{{ doctor.id }}">
+      <h3>2. Horários de {{ doctor.name }} em {{ day.strftime('%d/%m/%Y') }}</h3>
+      <p class="muted small">Duração da consulta: {{ doctor.consultation_duration }} minutos.</p>
+      {% if slots %}
+        <div class="slots" role="radiogroup" aria-label="Horários disponíveis">
+          {% for s in slots %}
+            <label class="slot"><input type="radio" name="start_at" value="{{ s.strftime('%Y-%m-%dT%H:%M') }}" required>
+              <span>{{ s.strftime('%H:%M') }}</span></label>
+          {% endfor %}
+        </div>
+        <label>Motivo da consulta (opcional)
+          <textarea name="reason" maxlength="300" rows="3" placeholder="Evite informar dados sensíveis desnecessários."></textarea></label>
+        <button class="btn btn-primary" type="submit"><i class="fa-solid fa-check"></i> Confirmar agendamento</button>
+      {% else %}
+        <div class="empty"><i class="fa-regular fa-calendar-xmark"></i><p>Não há horários livres nesta data. Tente outro dia.</p></div>
+      {% endif %}
+    </form>
+    {% elif doctor %}
+      <p class="muted center" style="margin-top:1.25rem">Escolha uma data para ver os horários disponíveis.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

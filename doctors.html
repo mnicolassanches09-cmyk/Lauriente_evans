@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Médicos — {{ hospital_name }}{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <h1>Nossos médicos</h1>
+    <form method="get" class="filters">
+      <label>Especialidade
+        <select name="specialty_id" data-autosubmit>
+          <option value="">Todas</option>
+          {% for s in specialties %}<option value="{{ s.id }}" {{ 'selected' if s.id == spec_id }}>{{ s.name }}</option>{% endfor %}
+        </select></label>
+      <label>Nome do médico
+        <input type="search" name="q" value="{{ q }}" placeholder="Buscar por nome"></label>
+      <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i> Filtrar</button>
+    </form>
+    {% if doctors %}
+      <div class="grid grid-3">{% for d in doctors %}{% include "_doctor_card.html" %}{% endfor %}</div>
+    {% else %}
+      <div class="empty"><i class="fa-regular fa-face-frown"></i><p>Nenhum médico encontrado com esses filtros.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

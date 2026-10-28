@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Laurient Evans">
+  <rect width="64" height="64" rx="16" fill="#1769AA"/>
+  <path d="M32 50C20 42 13 35 13 27c0-5 4-9 9-9 4 0 8 2 10 6 2-4 6-6 10-6 5 0 9 4 9 9 0 8-7 15-19 23z" fill="#EAF4FB" opacity=".18"/>
+  <rect x="27" y="14" width="10" height="36" rx="3" fill="#fff"/>
+  <rect x="14" y="27" width="36" height="10" rx="3" fill="#fff"/>
+</svg>

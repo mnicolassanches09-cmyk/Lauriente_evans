@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Painel administrativo — {{ hospital_name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    {% include "_admin_nav.html" %}
+    <h1>Painel da secretaria</h1>
+    <div class="grid grid-5">
+      <div class="card stat"><span>{{ stats.today }}</span><p>Consultas hoje</p></div>
+      <div class="card stat"><span>{{ stats.future }}</span><p>Consultas futuras</p></div>
+      <div class="card stat stat-red"><span>{{ stats.cancelled }}</span><p>Canceladas</p></div>
+      <div class="card stat"><span>{{ stats.doctors }}</span><p>Médicos ativos</p></div>
+      <div class="card stat"><span>{{ stats.patients }}</span><p>Pacientes</p></div>
+    </div>
+    <h2>Próximas consultas</h2>
+    {% set rows = upcoming %}{% include "_appt_table.html" %}
+    <h2>Atividade administrativa recente</h2>
+    {% if logs %}
+    <div class="table-wrap"><table>
+      <thead><tr><th>Quando</th><th>Administrador</th><th>Ação</th><th>Registro</th></tr></thead>
+      <tbody>{% for l in logs %}<tr><td>{{ l.created_at|br_date }} {{ l.created_at|hm }}</td><td>{{ l.admin_name }}</td>
+        <td>{{ l.action }}</td><td>{{ l.entity_type }} #{{ l.entity_id }}</td></tr>{% endfor %}</tbody>
+    </table></div>
+    {% else %}<div class="empty"><p>Nenhuma operação registrada ainda.</p></div>{% endif %}
+  </div>
+</section>
+{% endblock %}

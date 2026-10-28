@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Meus dados — {{ hospital_name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container narrow">
+    <h1>Meus dados cadastrais</h1>
+    <div class="card">
+      <dl class="details">
+        <dt>Nome</dt><dd>{{ current_user.name }}</dd>
+        <dt>CPF</dt><dd>{{ current_user.cpf|cpf_fmt }}</dd>
+        <dt>Nascimento</dt><dd>{{ current_user.birth_date }}</dd>
+        <dt>E-mail</dt><dd>{{ current_user.email }}</dd>
+        <dt>Telefone</dt><dd>{{ current_user.phone }}</dd>
+      </dl>
+      <p class="muted small">Para corrigir seus dados, procure a secretaria do hospital.</p>
+      <a class="btn btn-outline" href="{{ url_for('patient.dashboard') }}">Voltar ao painel</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

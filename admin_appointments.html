@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Consultas — Administração{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block content %}
+<section class="section"><div class="container">
+  {% include "_admin_nav.html" %}
+  <h1>Consultas</h1>
+  <form method="get" class="filters">
+    <label>Paciente <input name="patient" value="{{ f.patient }}"></label>
+    <label>Médico <input name="doctor" value="{{ f.doctor }}"></label>
+    <label>Especialidade <select name="specialty_id"><option value="">Todas</option>
+      {% for s in specialties %}<option value="{{ s.id }}" {{ 'selected' if s.id == f.specialty_id }}>{{ s.name }}</option>{% endfor %}</select></label>
+    <label>Data <input type="date" name="date" value="{{ f.date }}"></label>
+    <label>Status <select name="status"><option value="">Todos</option>
+      {% for v, l in [('scheduled','Agendada'),('completed','Concluída'),('cancelled','Cancelada')] %}<option value="{{ v }}" {{ 'selected' if f.status == v }}>{{ l }}</option>{% endfor %}</select></label>
+    <button class="btn btn-primary" type="submit">Filtrar</button>
+  </form>
+  {% include "_appt_table.html" %}
+</div></section>
+{% endblock %}

@@ -1,0 +1,9 @@
+<article class="card doctor-card">
+  {% if d.photo %}<img class="avatar" src="{{ d.photo }}" alt="Foto de {{ d.name }}">
+  {% else %}<div class="avatar" aria-hidden="true">{{ d.name|initials }}</div>{% endif %}
+  <h3>{{ d.name }}</h3>
+  <span class="badge badge-blue">{{ d.specialty_name }}</span>
+  <p>{{ d.bio or 'Profissional do corpo clínico Laurient Evans.' }}</p>
+  {% if d.experience_years %}<p class="muted small">{{ d.experience_years }} anos de experiência</p>{% endif %}
+  <a class="btn btn-primary btn-block" href="{{ url_for('appointments.new', doctor_id=d.id) }}">Agendar consulta</a>
+</article>

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Especialidades — Administração{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block content %}
+<section class="section"><div class="container">
+  {% include "_admin_nav.html" %}
+  <h1>Especialidades</h1>
+  <form method="post" class="card inline-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="create">
+    <label>Nome <input name="name" required minlength="3"></label>
+    <label>Descrição <input name="description" maxlength="300"></label>
+    <button class="btn btn-primary" type="submit">Adicionar</button>
+  </form>
+  <div class="stack" style="margin-top:1rem">
+  {% for s in rows %}
+    <div class="card inline-form">
+      <form method="post" class="inline-form grow">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="update">
+        <input type="hidden" name="id" value="{{ s.id }}">
+        <input name="name" value="{{ s.name }}" required minlength="3" aria-label="Nome">
+        <input name="description" value="{{ s.description or '' }}" maxlength="300" aria-label="Descrição">
+        <button class="btn btn-outline btn-sm" type="submit">Salvar</button>
+      </form>
+      <form method="post" data-confirm="Remover a especialidade {{ s.name }}?">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><input type="hidden" name="action" value="delete">
+        <input type="hidden" name="id" value="{{ s.id }}">
+        <button class="btn btn-danger btn-sm" type="submit" {{ 'disabled title="Em uso por médicos"' if s.n_doctors }}>Remover</button>
+      </form>
+    </div>
+  {% endfor %}
+  </div>
+</div></section>
+{% endblock %}

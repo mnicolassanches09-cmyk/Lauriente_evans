@@ -1,0 +1,17 @@
+<article class="card appt appt-{{ a.status }}">
+  <div class="appt-top">
+    <span class="badge badge-{{ a.status }}">{{ a.status|status_label }}</span>
+    <strong>{{ a.start_at|br_date }} às {{ a.start_at|hm }}</strong>
+  </div>
+  <h3>{{ a.doctor_name }}</h3>
+  <p class="muted">{{ a.specialty_name }}</p>
+  <div class="actions">
+    <a class="btn btn-outline btn-sm" href="{{ url_for('appointments.detail', appt_id=a.id) }}">Detalhes</a>
+    {% if a.can_cancel %}
+    <form method="post" action="{{ url_for('appointments.cancel', appt_id=a.id) }}" data-confirm="Deseja realmente cancelar esta consulta?">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="btn btn-danger btn-sm" type="submit">Cancelar consulta</button>
+    </form>
+    {% endif %}
+  </div>
+</article>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Meu painel — {{ hospital_name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div class="page-head">
+      <div><h1>Olá, {{ current_user.name.split()[0] }}!</h1><p class="muted">Acompanhe e gerencie suas consultas.</p></div>
+      <div class="actions">
+        <a class="btn btn-primary" href="{{ url_for('appointments.new') }}"><i class="fa-regular fa-calendar-plus"></i> Agendar consulta</a>
+        <a class="btn btn-outline" href="{{ url_for('patient.profile') }}"><i class="fa-regular fa-id-card"></i> Meus dados</a>
+      </div>
+    </div>
+
+    <h2>Próximas consultas</h2>
+    {% if upcoming %}
+      <div class="grid grid-2">{% for a in upcoming %}{% include "_appt_card.html" %}{% endfor %}</div>
+    {% else %}
+      <div class="empty"><i class="fa-regular fa-calendar"></i><p>Você não tem consultas agendadas.</p></div>
+    {% endif %}
+
+    <h2>Histórico</h2>
+    {% if history %}
+      <div class="grid grid-2">{% for a in history %}{% include "_appt_card.html" %}{% endfor %}</div>
+    {% else %}
+      <div class="empty"><p>Seu histórico aparecerá aqui.</p></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

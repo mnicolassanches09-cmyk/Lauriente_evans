@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Cadastro — {{ hospital_name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">{% endblock %}
+{% block content %}
+<section class="auth">
+  <div class="card auth-card wide">
+    <h1>Criar conta</h1>
+    <p class="muted">Pedimos apenas os dados necessários para o seu atendimento.</p>
+    <form method="post" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>Nome completo <input name="name" value="{{ values.name }}" required autocomplete="name"></label>
+      <div class="row">
+        <label>CPF <input name="cpf" value="{{ values.cpf }}" inputmode="numeric" placeholder="000.000.000-00" required></label>
+        <label>Data de nascimento <input type="date" name="birth_date" value="{{ values.birth_date }}" required></label>
+      </div>
+      <div class="row">
+        <label>E-mail <input type="email" name="email" value="{{ values.email }}" required autocomplete="email"></label>
+        <label>Telefone <input type="tel" name="phone" value="{{ values.phone }}" placeholder="(11) 99999-9999" required autocomplete="tel"></label>
+      </div>
+      <div class="row">
+        <label>Senha <input type="password" name="password" required minlength="8" autocomplete="new-password"></label>
+        <label>Confirmar senha <input type="password" name="confirm_password" required minlength="8" autocomplete="new-password"></label>
+      </div>
+      <p class="muted small">Mínimo de 8 caracteres, com letras e números.</p>
+      <button class="btn btn-primary btn-block" type="submit">Cadastrar</button>
+    </form>
+    <p class="center">Já tem conta? <a href="{{ url_for('auth.login') }}">Entrar</a></p>
+  </div>
+</section>
+{% endblock %}

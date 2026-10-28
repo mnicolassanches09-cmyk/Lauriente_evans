@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Médicos — Administração{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block content %}
+<section class="section"><div class="container">
+  {% include "_admin_nav.html" %}
+  <div class="page-head"><h1>Médicos</h1>
+    <a class="btn btn-primary" href="{{ url_for('admin.doctor_new') }}"><i class="fa-solid fa-plus"></i> Novo médico</a></div>
+  {% if doctors %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nome</th><th>CRM</th><th>Especialidade</th><th>Duração</th><th>Status</th><th>Ações</th></tr></thead>
+    <tbody>{% for d in doctors %}<tr>
+      <td>{{ d.name }}</td><td>{{ d.crm or '—' }}</td><td>{{ d.specialty_name }}</td><td>{{ d.consultation_duration }} min</td>
+      <td><span class="badge {{ 'badge-completed' if d.is_active else 'badge-cancelled' }}">{{ 'Ativo' if d.is_active else 'Inativo' }}</span></td>
+      <td class="actions">
+        <a class="btn btn-outline btn-sm" href="{{ url_for('admin.doctor_edit', doctor_id=d.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('admin.doctor_toggle', doctor_id=d.id) }}"
+              data-confirm="{{ 'Desativar' if d.is_active else 'Ativar' }} este médico?">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-outline btn-sm" type="submit">{{ 'Desativar' if d.is_active else 'Ativar' }}</button></form>
+      </td></tr>{% endfor %}</tbody>
+  </table></div>
+  {% else %}<div class="empty"><p>Nenhum médico cadastrado.</p></div>{% endif %}
+</div></section>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-inner">
+    <div>
+      <h1>Cuidar da sua saúde é a nossa prioridade</h1>
+      <p>Consultas em dez especialidades, médicos experientes e agendamento online simples, seguro e sem filas.</p>
+      <a class="btn btn-light btn-lg" href="{{ url_for('appointments.new') }}"><i class="fa-regular fa-calendar-check"></i> Agendar consulta</a>
+    </div>
+    <div class="hero-card" aria-hidden="true"><i class="fa-solid fa-user-doctor"></i></div>
+  </div>
+</section>
+
+<section class="section" id="especialidades">
+  <div class="container">
+    <h2>Especialidades</h2>
+    <div class="grid grid-4">
+      {% for s in specialties %}
+      <a class="card spec-card" href="{{ url_for('public.doctors', specialty_id=s.id) }}">
+        <i class="fa-solid fa-stethoscope"></i>
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.description }}</p>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <h2>Nossos médicos</h2>
+    <p class="muted">Profissionais fictícios, criados apenas para demonstração.</p>
+    <div class="grid grid-4">
+      {% for d in doctors %}{% include "_doctor_card.html" %}{% endfor %}
+    </div>
+    <p class="center"><a class="btn btn-outline" href="{{ url_for('public.doctors') }}">Ver todos os médicos</a></p>
+  </div>
+</section>
+
+<section class="section" id="sobre">
+  <div class="container">
+    <h2>Por que escolher o Laurient Evans?</h2>
+    <div class="grid grid-3">
+      <div class="card"><i class="fa-solid fa-shield-heart big"></i><h3>Segurança</h3><p>Senhas protegidas, acesso restrito e respeito à privacidade dos pacientes.</p></div>
+      <div class="card"><i class="fa-solid fa-clock big"></i><h3>Praticidade</h3><p>Agende e cancele consultas em poucos cliques, a qualquer hora.</p></div>
+      <div class="card"><i class="fa-solid fa-hand-holding-heart big"></i><h3>Cuidado</h3><p>Equipe dedicada a oferecer um atendimento humano e acolhedor.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container grid grid-3">
+    <div><h3><i class="fa-solid fa-location-dot"></i> Endereço</h3><p>Av. Exemplo, 1000 — Cidade Fictícia/XX<br><span class="muted">(endereço fictício, apenas demonstração)</span></p></div>
+    <div><h3><i class="fa-solid fa-phone"></i> Contato</h3><p>(00) 0000-0000<br>contato@laurient-evans.example</p></div>
+    <div><h3><i class="fa-regular fa-clock"></i> Funcionamento</h3><p>Segunda a sexta, 7h às 19h<br>Sábados, 8h às 12h</p></div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Pacientes — Administração{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block content %}
+<section class="section"><div class="container">
+  {% include "_admin_nav.html" %}
+  <h1>Pacientes</h1>
+  <form method="get" class="filters"><label>Buscar <input type="search" name="q" value="{{ q }}" placeholder="Nome ou e-mail"></label>
+    <button class="btn btn-primary" type="submit">Buscar</button></form>
+  {% if rows %}
+  <div class="table-wrap"><table>
+    <thead><tr><th>Nome</th><th>CPF</th><th>E-mail</th><th>Telefone</th><th>Consultas</th><th>Cadastro</th></tr></thead>
+    <tbody>{% for p in rows %}<tr><td>{{ p.name }}</td><td>{{ p.cpf|cpf_mask }}</td><td>{{ p.email }}</td><td>{{ p.phone }}</td>
+      <td>{{ p.n_appts }}</td><td>{{ p.created_at|br_date }}</td></tr>{% endfor %}</tbody>
+  </table></div>
+  <p class="muted small">CPF parcialmente oculto por privacidade (minimização de dados).</p>
+  {% else %}<div class="empty"><p>Nenhum paciente encontrado.</p></div>{% endif %}
+</div></section>
+{% endblock %}

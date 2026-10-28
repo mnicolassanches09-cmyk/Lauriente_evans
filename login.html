@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Entrar — {{ hospital_name }}{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">{% endblock %}
+{% block content %}
+<section class="auth">
+  <div class="card auth-card">
+    <h1>Entrar</h1>
+    <p class="muted">Acesse sua conta de paciente.</p>
+    <form method="post" novalidate>
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label>E-mail <input type="email" name="email" value="{{ email }}" required autocomplete="email" autofocus></label>
+      <label>Senha <input type="password" name="password" required autocomplete="current-password"></label>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+    <p class="center">Ainda não tem conta? <a href="{{ url_for('auth.register') }}">Cadastre-se</a></p>
+  </div>
+</section>
+{% endblock %}

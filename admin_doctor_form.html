@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Editar' if doctor_id else 'Novo' }} médico — Administração{% endblock %}
+{% block css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">{% endblock %}
+{% block content %}
+<section class="section"><div class="container narrow">
+  {% include "_admin_nav.html" %}
+  <h1>{{ 'Editar médico' if doctor_id else 'Novo médico' }}</h1>
+  <form method="post" class="card stack" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <label>Nome completo <input name="name" value="{{ d.name }}" required></label>
+    <div class="row">
+      <label>CRM <input name="crm" value="{{ d.crm }}"></label>
+      <label>Especialidade <select name="specialty_id" required><option value="">Selecione…</option>
+        {% for s in specialties %}<option value="{{ s.id }}" {{ 'selected' if s.id|string == d.specialty_id }}>{{ s.name }}</option>{% endfor %}</select></label>
+    </div>
+    <label>Biografia (até 600 caracteres) <textarea name="bio" rows="3" maxlength="600">{{ d.bio }}</textarea></label>
+    <div class="row">
+      <label>Anos de experiência <input type="number" name="experience_years" min="0" max="70" value="{{ d.experience_years }}"></label>
+      <label>Duração da consulta (min) <input type="number" name="consultation_duration" min="5" max="240" value="{{ d.consultation_duration }}" required></label>
+    </div>
+    <label>URL da foto (opcional) <input name="photo" value="{{ d.photo }}" placeholder="https://…"></label>
+    <label class="check"><input type="checkbox" name="is_active" value="1" {{ 'checked' if d.is_active }}> Médico ativo</label>
+    <fieldset><legend>Dias e horários de atendimento</legend>
+      {% for wd in range(7) %}{% set s = sched[wd] %}
+      <div class="sched-row">
+        <label class="check"><input type="checkbox" name="d{{ wd }}_on" value="1" {{ 'checked' if s.on }}> {{ WEEKDAYS[wd] }}</label>
+        <input type="time" name="d{{ wd }}_start" value="{{ s.start }}" aria-label="Início {{ WEEKDAYS[wd] }}">
+        <input type="time" name="d{{ wd }}_end" value="{{ s.end }}" aria-label="Fim {{ WEEKDAYS[wd] }}">
+        <input type="number" name="d{{ wd }}_interval" min="5" max="240" value="{{ s.interval }}" aria-label="Intervalo (min) {{ WEEKDAYS[wd] }}" title="Intervalo entre horários (min)">
+      </div>{% endfor %}
+      <p class="muted small">Início, fim e intervalo (minutos) entre os horários oferecidos.</p>
+    </fieldset>
+    <div class="actions">
+      <button class="btn btn-primary" type="submit">Salvar</button>
+      <a class="btn btn-outline" href="{{ url_for('admin.doctors') }}">Cancelar</a>
+    </div>
+  </form>
+</div></section>
+{% endblock %}

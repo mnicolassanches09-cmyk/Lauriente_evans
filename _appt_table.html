@@ -1,0 +1,23 @@
+{% if rows %}
+<div class="table-wrap"><table>
+  <thead><tr><th>Paciente</th><th>Médico</th><th>Especialidade</th><th>Data</th><th>Horário</th><th>Status</th><th>Ações</th></tr></thead>
+  <tbody>
+  {% for a in rows %}
+  <tr>
+    <td>{{ a.patient_name }}</td><td>{{ a.doctor_name }}</td><td>{{ a.specialty_name }}</td>
+    <td>{{ a.start_at|br_date }}</td><td>{{ a.start_at|hm }}–{{ a.end_at|hm }}</td>
+    <td><span class="badge badge-{{ a.status }}">{{ a.status|status_label }}</span></td>
+    <td class="actions">
+      <a class="btn btn-outline btn-sm" href="{{ url_for('admin.appointment_detail', appt_id=a.id) }}">Ver</a>
+      {% if a.status == 'scheduled' %}
+      <form method="post" action="{{ url_for('admin.complete_appointment', appt_id=a.id) }}" data-confirm="Marcar esta consulta como concluída?">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-success btn-sm" type="submit">Concluir</button></form>
+      <form method="post" action="{{ url_for('admin.cancel_appointment', appt_id=a.id) }}" data-confirm="Cancelar esta consulta? O horário será liberado.">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button class="btn btn-danger btn-sm" type="submit">Cancelar</button></form>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+  </tbody>
+</table></div>
+{% else %}<div class="empty"><i class="fa-regular fa-calendar"></i><p>Nenhuma consulta encontrada.</p></div>{% endif %}
